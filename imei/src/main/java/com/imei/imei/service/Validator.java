@@ -1,6 +1,7 @@
 package com.imei.imei.service;
 
 
+import com.imei.imei.personalexceptions.InvalidNumberException;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Function;
@@ -19,9 +20,13 @@ public class Validator
         for(int i = value.length()-1; i >= 0; i--)
         {
             int tmp = 0;
-            if(i % 2 != 0) tmp = Integer.parseInt(String.valueOf(value.charAt(i))) * 2;
-            else    tmp = Integer.parseInt(String.valueOf(value.charAt(i)));
-            sum+=doSum(tmp);
+            try{
+                if(i % 2 != 0) tmp = Integer.parseInt(String.valueOf(value.charAt(i))) * 2;
+                else    tmp = Integer.parseInt(String.valueOf(value.charAt(i)));
+                sum+=doSum(tmp);
+            }catch (Exception ae){
+                throw new InvalidNumberException("Your input value is not valid do not include any symbol or letter and try again");
+            }
         }
         return sum%10==0 ? true : false;
     }
