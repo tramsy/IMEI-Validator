@@ -37,7 +37,7 @@ public class Validator
         else return -1;
 
 
-        System.out.println("NUmber: " + num);
+        
         StringBuilder builder = new StringBuilder(value);
         builder.replace(value.length()-1, value.length(), "");
         builder.append(num.toString());
