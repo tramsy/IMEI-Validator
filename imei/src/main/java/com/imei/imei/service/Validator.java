@@ -49,6 +49,7 @@ public class Validator
             Function<String, Integer> makeValid = Validator::correctIme;
             Integer ans = makeValid.apply(imeiNumber);
             num = 0;
+            if(ans == -1)   return("NOT POSSIBLE TO CONVERT THIS NUMBER ");
             return("IMEI NUMBER IS INVALID REPLACE LAST NUMBER WITH: " + ans);
         }else{
             num = 0;
