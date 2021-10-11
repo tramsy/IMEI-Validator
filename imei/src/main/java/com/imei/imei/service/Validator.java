@@ -1,7 +1,6 @@
 package com.imei.imei.service;
 
 
-import com.imei.imei.personalexceptions.InvalidNumberException;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Function;
@@ -15,20 +14,23 @@ public class Validator
 
     public static boolean isValid(String value)
     {
-        int sum = 0;
+        int len = value.length();
+        Long n = Long.parseLong(value);
 
-        for(int i = value.length()-1; i >= 0; i--)
+        if (len != 15)
+            return false;
+
+        int sum = 0;
+        for (int i = len; i >= 1; i--)
         {
-            int tmp = 0;
-            try{
-                if(i % 2 != 0) tmp = Integer.parseInt(String.valueOf(value.charAt(i))) * 2;
-                else    tmp = Integer.parseInt(String.valueOf(value.charAt(i)));
-                sum+=doSum(tmp);
-            }catch (Exception ae){
-                throw new InvalidNumberException("Your input value is not valid do not include any symbol or letter and try again");
-            }
+            int d = (int)(n % 10);
+            if (i % 2 == 0)
+                d = 2 * d;
+            sum += doSum(d);
+            n = n / 10;
         }
-        return sum%10==0 ? true : false;
+
+        return (sum % 10 == 0);
     }
 
     static int correctIme(String value)
@@ -54,7 +56,7 @@ public class Validator
             Function<String, Integer> makeValid = Validator::correctIme;
             Integer ans = makeValid.apply(imeiNumber);
             num = 0;
-            if(ans == -1)   return("NOT POSSIBLE TO CONVERT THIS NUMBER ");
+            if(ans == -1)   return("IMEI NUMBER IS INVALID");
             return("IMEI NUMBER IS INVALID REPLACE LAST NUMBER WITH: " + ans);
         }else{
             num = 0;
